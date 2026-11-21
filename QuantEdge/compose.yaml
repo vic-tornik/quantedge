@@ -1,0 +1,18 @@
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: quantedge
+      POSTGRES_DB: quantedge
+      POSTGRES_PASSWORD: ${QE_POSTGRES_PASSWORD:?Set QE_POSTGRES_PASSWORD in your terminal}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - quantedge_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U quantedge -d quantedge"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+volumes:
+  quantedge_pg:
